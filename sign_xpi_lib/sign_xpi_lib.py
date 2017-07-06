@@ -73,31 +73,31 @@ class Section(object):
         # sensitive and should not be changed without reading through
         # http://docs.oracle.com/javase/7/docs/technotes/guides/jar/jar.html#JAR%20Manifest
         # thoroughly.
-        algos = b''
+        algos = ''
         order = list(self.digests.keys())
         order.sort()
         for algo in order:
-            algos += b' %s' % algo.upper().encode('utf-8')
-        entry = b''
+            algos += ' %s' % algo.upper()
+        entry = ''
         # The spec for zip files only supports extended ASCII and UTF-8
         # See http://www.pkware.com/documents/casestudies/APPNOTE.TXT
         # and search for "language encoding" for details
         #
         # See https://bugzilla.mozilla.org/show_bug.cgi?id=1013347
-        name = b'Name: %s' % self.name.encode('utf-8')
+        name = 'Name: %s' % self.name
 
         # See https://bugzilla.mozilla.org/show_bug.cgi?id=841569#c35
         while name:
             entry += name[:72]
             name = name[72:]
             if name:
-                entry += b'\n '
-        entry += b'\n'
-        entry += b'Digest-Algorithms:%s\n' % algos
+                entry += '\n '
+        entry += '\n'
+        entry += 'Digest-Algorithms:%s\n' % algos
         for algo in order:
-            entry += b'%s-Digest: %s\n' % (algo.upper().encode('utf-8'),
-                                           b64encode(self.digests[algo]))
-        return entry.decode('utf-8')
+            entry += '%s-Digest: %s\n' % (algo.upper(),
+                                          b64encode(self.digests[algo]).decode('utf-8'))
+        return entry
 
 
 class Manifest(list):
@@ -122,9 +122,11 @@ class Manifest(list):
         return b"\n".join([str(i).encode('utf-8') for i in self])
 
     def __str__(self):
-        segments = [self.header, b"", self.body]
-        segments.append(b"")
-        return b"\n".join(segments).decode('utf-8')
+        segments = [self.header.decode('utf-8'),
+                    "",
+                    self.body.decode('utf-8'),
+                    ""]
+        return "\n".join(segments)
 
 
 class Signature(Manifest):
@@ -145,7 +147,7 @@ class Signature(Manifest):
         return b"\n".join(segments)
 
     def __str__(self):
-        return (self.header + b"\n").decode('utf-8')
+        return self.header.decode('utf-8') + "\n"
 
 
 class XPIFile(object):
