@@ -83,3 +83,18 @@ def test_xpi_signer_make_signed_seems_sane():
         assert infolist[0].filename == 'META-INF/mozilla.rsa'
         assert signature == z.read('META-INF/mozilla.rsa')
         assert signed_manifest == z.read('META-INF/mozilla.sf')
+
+
+def test_xpi_signer_doesnt_overwrite_files():
+    x = XPIFile(get_test_file('hypothetical-addon-unsigned.xpi'))
+    signed_name = 'hypothetical-addon-signed.xpi'
+    signature = b'This signature is valid'
+    signed_manifest = b'Signature-Version: 1.0-test'
+    with tempfile.TemporaryDirectory() as sandbox:
+        signed_file = os.path.join(sandbox, signed_name)
+        open(signed_file, 'w').write('I already exist')
+
+        with pytest.raises(FileExistsError):
+            x.make_signed(signed_file,
+                          'mozilla.rsa',
+                          signed_manifest, signature)

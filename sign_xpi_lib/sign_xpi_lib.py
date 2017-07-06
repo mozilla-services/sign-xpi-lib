@@ -213,9 +213,6 @@ class XPIFile(object):
         if not outpath:
             raise IOError("No output file specified")
 
-        if os.path.exists(outpath):
-            raise IOError("File already exists: %s" % outpath)
-
         sigpath = sigpath
         # Normalize to a simple filename with no extension or prefixed
         # directory
@@ -223,7 +220,7 @@ class XPIFile(object):
         sigpath = os.path.join('META-INF', sigpath)
 
         with ZipFile(self.inpath, 'r') as zin:
-            with ZipFile(outpath, 'w', ZIP_DEFLATED) as zout:
+            with ZipFile(outpath, 'x', ZIP_DEFLATED) as zout:
                 # The PKCS7 file("foo.rsa") *MUST* be the first file in the
                 # archive to take advantage of Firefox's optimized downloading
                 # of XPIs
