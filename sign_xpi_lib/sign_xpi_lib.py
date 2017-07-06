@@ -3,6 +3,7 @@
 """Main module."""
 
 import fnmatch
+import functools
 import hashlib
 import os.path
 import re
@@ -164,8 +165,6 @@ class XPIFile(object):
         """
         self.inpath = path
         self._digests = []
-        self._manifest = None
-        self._sig = None
         self.ids = ids
 
         def mksection(data, fname):
@@ -190,20 +189,18 @@ class XPIFile(object):
                        digests=digests)
 
     @property
+    @functools.lru_cache(maxsize=None)
     def manifest(self):
-        if not self._manifest:
-            self._manifest = Manifest(self._digests)
-        return self._manifest
+        return Manifest(self._digests)
 
     @property
+    @functools.lru_cache(maxsize=None)
     def signatures(self):
         # The META-INF/*.sf files should contain hashes of the individual
         # sections of the the META-INF/manifest.mf file.  So we generate those
         # signatures here
-        if not self._sig:
-            self._sig = Signature([self._sign(f) for f in self._digests],
-                                  digest_manifests=_digest(str(self.manifest).encode('utf-8')))
-        return self._sig
+        return Signature([self._sign(f) for f in self._digests],
+                         digest_manifests=_digest(str(self.manifest).encode('utf-8')))
 
     @property
     def signature(self):
