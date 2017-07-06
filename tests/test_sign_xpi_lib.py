@@ -17,6 +17,7 @@ TEST_DIR, _ = os.path.split(__file__)
 def get_test_file(filename):
     return os.path.join(TEST_DIR, filename)
 
+
 @pytest.fixture
 def response():
     """Sample pytest fixture.
@@ -64,6 +65,7 @@ MD5-Digest-Manifest: XU3UhXU7uJk6DSVwYnMTaw==
 SHA1-Digest-Manifest: vUiKJEH/RQWg77nUG5r9dGe+fMc=
 
 """
+
 
 def test_xpi_signer_make_signed_seems_sane():
     x = XPIFile(get_test_file('hypothetical-addon-unsigned.xpi'))

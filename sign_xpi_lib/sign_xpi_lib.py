@@ -96,8 +96,8 @@ class Section(object):
         entry += '\n'
         entry += 'Digest-Algorithms:%s\n' % algos
         for algo in order:
-            entry += '%s-Digest: %s\n' % (algo.upper(),
-                                          b64encode(self.digests[algo]).decode('utf-8'))
+            entry += '%s-Digest: %s\n' % (
+                algo.upper(), b64encode(self.digests[algo]).decode('utf-8'))
         return entry
 
 
@@ -199,8 +199,9 @@ class XPIFile(object):
         # The META-INF/*.sf files should contain hashes of the individual
         # sections of the the META-INF/manifest.mf file.  So we generate those
         # signatures here
+        digest_manifest = _digest(str(self.manifest).encode('utf-8'))
         return Signature([self._sign(f) for f in self._digests],
-                         digest_manifests=_digest(str(self.manifest).encode('utf-8')))
+                         digest_manifests=digest_manifest)
 
     @property
     def signature(self):
