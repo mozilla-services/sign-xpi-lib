@@ -8,7 +8,7 @@ import pytest
 import tempfile
 from zipfile import ZipFile
 
-from sign_xpi_lib.sign_xpi_lib import XPIFile
+from sign_xpi_lib import XPIFile
 
 
 TEST_DIR, _ = os.path.split(__file__)
