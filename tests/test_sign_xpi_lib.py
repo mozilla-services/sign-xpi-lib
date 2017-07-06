@@ -5,6 +5,8 @@
 
 import os.path
 import pytest
+import tempfile
+from zipfile import ZipFile
 
 from sign_xpi_lib.sign_xpi_lib import XPIFile
 
@@ -62,3 +64,20 @@ MD5-Digest-Manifest: XU3UhXU7uJk6DSVwYnMTaw==
 SHA1-Digest-Manifest: vUiKJEH/RQWg77nUG5r9dGe+fMc=
 
 """
+
+def test_xpi_signer_make_signed_seems_sane():
+    x = XPIFile(get_test_file('hypothetical-addon-unsigned.xpi'))
+    signed_name = 'hypothetical-addon-signed.xpi'
+    signature = b'This signature is valid'
+    signed_manifest = b'Signature-Version: 1.0-test'
+    with tempfile.TemporaryDirectory() as sandbox:
+        signed_file = os.path.join(sandbox, signed_name)
+        x.make_signed(signed_file,
+                      'mozilla.rsa',
+                      signed_manifest, signature)
+
+        z = ZipFile(signed_file, 'r')
+        infolist = z.infolist()
+        assert infolist[0].filename == 'META-INF/mozilla.rsa'
+        assert signature == z.read('META-INF/mozilla.rsa')
+        assert signed_manifest == z.read('META-INF/mozilla.sf')

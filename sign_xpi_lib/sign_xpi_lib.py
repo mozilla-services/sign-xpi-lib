@@ -157,11 +157,10 @@ class XPIFile(object):
     be used to produce a signed XPI file.
     """
 
-    def __init__(self, path, outpath=None, ids=None):
+    def __init__(self, path, ids=None):
         """
         """
         self.inpath = path
-        self.outpath = outpath
         self._digests = []
         self._manifest = None
         self._sig = None
@@ -210,15 +209,14 @@ class XPIFile(object):
         # section signatures
         return self.signatures.header + b"\n"
 
-    def make_signed(self, signature, outpath=None, sigpath=None):
-        outpath = outpath or self.outpath
+    def make_signed(self, outpath, sigpath, signed_manifest, signature):
         if not outpath:
             raise IOError("No output file specified")
 
         if os.path.exists(outpath):
             raise IOError("File already exists: %s" % outpath)
 
-        sigpath = sigpath or self.signatures.filename
+        sigpath = sigpath
         # Normalize to a simple filename with no extension or prefixed
         # directory
         sigpath = os.path.splitext(os.path.basename(sigpath))[0]
@@ -237,6 +235,6 @@ class XPIFile(object):
                         continue
                     zout.writestr(f, zin.read(f.filename))
                 zout.writestr("META-INF/manifest.mf", str(self.manifest))
-                zout.writestr("%s.sf" % sigpath, str(self.signatures))
+                zout.writestr("%s.sf" % sigpath, signed_manifest)
                 if self.ids is not None:
                     zout.writestr('META-INF/ids.json', self.ids)
