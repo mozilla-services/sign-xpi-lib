@@ -60,7 +60,7 @@ def test_xpi_signer_signature_seems_sane():
     """Verify that an XPI file's manifest is accessible and has stuff in it."""
     x = XPIFile(get_test_file('hypothetical-addon-unsigned.xpi'))
 
-    assert x.signature == b"""Signature-Version: 1.0
+    assert x.signature == """Signature-Version: 1.0
 MD5-Digest-Manifest: XU3UhXU7uJk6DSVwYnMTaw==
 SHA1-Digest-Manifest: vUiKJEH/RQWg77nUG5r9dGe+fMc=
 

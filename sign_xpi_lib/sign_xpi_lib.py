@@ -167,7 +167,7 @@ class Signature(object):
         segments = [manifest_header('Signature')]
         segments.extend(self.digest_manifest)
         segments.append('')
-        return "\n".join(segments).encode('utf-8')
+        return "\n".join(segments)
 
     def __str__(self):
         return self.header + "\n"
@@ -226,7 +226,7 @@ class XPIFile(object):
     def signature(self):
         # Returns only the x-Digest-Manifest signature and omits the individual
         # section signatures
-        return self.signatures.header + b"\n"
+        return self.signatures.header + "\n"
 
     def make_signed(self, outpath, sigpath, signed_manifest, signature):
         if not outpath:
