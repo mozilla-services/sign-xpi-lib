@@ -193,10 +193,6 @@ class XPIFile(object):
             if ids:
                 mksection(ids, 'META-INF/ids.json')
 
-    def _sign(self, item):
-        digests = _digest(str(item).encode('utf-8'))
-        return Section(item.name, digests=digests)
-
     @property
     @functools.lru_cache(maxsize=None)
     def manifest(self):
@@ -209,8 +205,7 @@ class XPIFile(object):
         # sections of the the META-INF/manifest.mf file.  So we generate those
         # signatures here
         digest_manifest = _digest(str(self.manifest).encode('utf-8'))
-        return Signature([self._sign(f) for f in self._digests],
-                         digest_manifests=digest_manifest)
+        return Signature([], digest_manifests=digest_manifest)
 
     @property
     def signature(self):
