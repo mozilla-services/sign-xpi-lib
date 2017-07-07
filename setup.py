@@ -8,8 +8,8 @@ from setuptools import setup, find_packages
 with open('README.rst') as readme_file:
     readme = readme_file.read()
 
-with open('HISTORY.rst') as history_file:
-    history = history_file.read()
+with open('CHANGELOG.rst') as changelog_file:
+    changelog = changelog_file.read()
 
 requirements = [
     # TODO: put package requirements here
@@ -29,7 +29,7 @@ setup(
     name='sign_xpi_lib',
     version='0.1.0',
     description="A library to handle the manipulations of signing XPIs at Mozilla.",
-    long_description=readme + '\n\n' + history,
+    long_description=readme + '\n\n' + changelog,
     author="Ethan Glasser-Camp",
     author_email='eglassercamp@mozilla.com',
     url='https://github.com/glasserc/sign_xpi_lib',
