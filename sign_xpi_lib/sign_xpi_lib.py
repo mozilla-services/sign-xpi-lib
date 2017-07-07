@@ -134,12 +134,12 @@ class Manifest(object):
 
     @property
     def body(self):
-        return b"\n".join([str(i).encode('utf-8') for i in self.sections])
+        return "\n".join([str(i) for i in self.sections])
 
     def __str__(self):
         segments = [manifest_header('Manifest'),
                     "",
-                    self.body.decode('utf-8'),
+                    self.body,
                     ""]
         return "\n".join(segments)
 
