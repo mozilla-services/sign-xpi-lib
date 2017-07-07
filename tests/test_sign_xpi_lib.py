@@ -34,24 +34,28 @@ def test_xpi_signer_manifest_seems_sane():
     assert str(x.manifest) == """Manifest-Version: 1.0
 
 Name: content.js
-Digest-Algorithms: MD5 SHA1
+Digest-Algorithms: MD5 SHA1 SHA256
 MD5-Digest: 1USWi3/aQcBJdik7zRPi3Q==
 SHA1-Digest: hStL5xaG/NV6z3PrVqBn7pA/ovY=
+SHA256-Digest: SyzN6k1xO7bMtWm4F0qmd9BQNII0Pdj9qAYt+31kwQ8=
 
 Name: manifest.json
-Digest-Algorithms: MD5 SHA1
+Digest-Algorithms: MD5 SHA1 SHA256
 MD5-Digest: XDjUvCuM+uVn3WZ0On8GZA==
 SHA1-Digest: YD+s4lbJBrPCsTjlppad7kG/f8Y=
+SHA256-Digest: UgduoifBgZBYEpRuuo5PTYAGSqffIIc0Q71NLWiIObc=
 
 Name: README.txt
-Digest-Algorithms: MD5 SHA1
+Digest-Algorithms: MD5 SHA1 SHA256
 MD5-Digest: X/eti4SGeMla30jsgvXsYg==
 SHA1-Digest: eYJ+zdu1ufrA0ZNH82aj17iQ23U=
+SHA256-Digest: qf/cDvSBp+jx5x7/QUVNZSex+WuSOr9bQ3acXEKXc6o=
 
 Name: icons/hypothetical-48.png
-Digest-Algorithms: MD5 SHA1
+Digest-Algorithms: MD5 SHA1 SHA256
 MD5-Digest: NyKobXm4DOyAkCDBomN2NA==
 SHA1-Digest: kOANs5plfc23hWQnOPTtGBGhj/I=
+SHA256-Digest: hho3C/YNs59bdqjBl6JpcBtA5I4paeBb8wG/Dr7nUM4=
 
 """
 
@@ -61,8 +65,9 @@ def test_xpi_signer_signature_seems_sane():
     x = XPIFile(get_test_file('hypothetical-addon-unsigned.xpi'))
 
     assert x.signature == """Signature-Version: 1.0
-MD5-Digest-Manifest: XU3UhXU7uJk6DSVwYnMTaw==
-SHA1-Digest-Manifest: vUiKJEH/RQWg77nUG5r9dGe+fMc=
+MD5-Digest-Manifest: 8vL/r3cOVrIsSgyAIgN9SA==
+SHA1-Digest-Manifest: LxW3zSX3tlnm1Nfq/RJjzP9nYes=
+SHA256-Digest-Manifest: H2Qpz9EAX0SbhY4s+V9xcK0ul3Ia5tM/VGgxTT+IDWQ=
 
 """
 
