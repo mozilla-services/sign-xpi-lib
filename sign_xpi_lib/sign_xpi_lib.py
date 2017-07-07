@@ -40,22 +40,26 @@ def ignore_certain_metainf_files(filename):
     return False
 
 
-def file_key(zinfo):
+def file_key(filename):
+    '''Sort keys for xpi files
+
+    The filenames in a manifest are ordered so that files not in a
+    directory come before files in any directory, ordered
+    alphabetically but ignoring case, with a few exceptions
+    (install.rdf, chrome.manifest, icon.png and icon64.png come at the
+    beginning; licenses come at the end).
+
+    This order does not appear to affect anything in any way, but it
+    looks nicer.
     '''
-    Sort keys for xpi files
-    @param name: name of the file to generate the sort key from
-    '''
-    # Copied from xpisign.py's api.py and tweaked
-    name = zinfo.filename
     prio = 4
-    if name == 'install.rdf':
+    if filename == 'install.rdf':
         prio = 1
-    elif name in ["chrome.manifest", "icon.png", "icon64.png"]:
+    elif filename in ["chrome.manifest", "icon.png", "icon64.png"]:
         prio = 2
-    elif name in ["MPL", "GPL", "LGPL", "COPYING", "LICENSE", "license.txt"]:
+    elif filename in ["MPL", "GPL", "LGPL", "COPYING", "LICENSE", "license.txt"]:
         prio = 5
-    parts = [prio] + list(os.path.split(name.lower()))
-    return "{}-{}-{}".format(*parts)
+    return (prio, os.path.split(filename.lower()))
 
 
 def _digest(data):
@@ -181,8 +185,10 @@ class XPIFile(object):
             item = Section(fname, algos=tuple(digests.keys()),
                            digests=digests)
             self._digests.append(item)
+        def zinfo_key(zinfo):
+            return file_key(zinfo.filename)
         with ZipFile(self.inpath, 'r') as zin:
-            for f in sorted(zin.filelist, key=file_key):
+            for f in sorted(zin.filelist, key=zinfo_key):
                 # Skip directories and specific files found in META-INF/ that
                 # are not permitted in the manifest
                 if (directory_re.search(f.filename)
