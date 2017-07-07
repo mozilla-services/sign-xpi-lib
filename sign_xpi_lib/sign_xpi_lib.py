@@ -145,8 +145,6 @@ class Manifest(object):
 
 
 class Signature(object):
-    filename = 'zigbert'
-
     def __init__(self, digest_manifests):
         self.digest_manifests = digest_manifests
 
