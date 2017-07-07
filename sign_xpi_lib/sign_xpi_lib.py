@@ -57,7 +57,8 @@ def file_key(filename):
         prio = 1
     elif filename in ["chrome.manifest", "icon.png", "icon64.png"]:
         prio = 2
-    elif filename in ["MPL", "GPL", "LGPL", "COPYING", "LICENSE", "license.txt"]:
+    elif filename in ["MPL", "GPL", "LGPL", "COPYING",
+                      "LICENSE", "license.txt"]:
         prio = 5
     return (prio, os.path.split(filename.lower()))
 
@@ -99,7 +100,8 @@ class Section(object):
         entry += '\n'
         order = list(self.digests.keys())
         order.sort()
-        entry += 'Digest-Algorithms: {}\n'.format(' '.join([algo.upper() for algo in order]))
+        entry += 'Digest-Algorithms: {}\n'.format(
+            ' '.join([algo.upper() for algo in order]))
         for algo in order:
             entry += '{}-Digest: {}\n'.format(
                 algo.upper(), b64encode(self.digests[algo]).decode('utf-8'))
@@ -112,8 +114,10 @@ def manifest_header(type_name, version='1.0'):
     >>> manifest_header("signature")
     "Signature-Version: 1.0"
 
-    :param type_name: The kind of manifest which needs a header: "manifest", "signature".
-    :param version: The manifest version to encode in the header (default: '1.0')
+    :param type_name: The kind of manifest which needs a header:
+        "manifest", "signature".
+    :param version: The manifest version to encode in the header
+        (default: '1.0')
     """
     return "{}-Version: {}".format(
         type_name.title(),
@@ -189,8 +193,10 @@ class XPIFile(object):
             digests = _digest(data)
             item = Section(fname, digests=digests)
             self._digests.append(item)
+
         def zinfo_key(zinfo):
             return file_key(zinfo.filename)
+
         with ZipFile(self.inpath, 'r') as zin:
             for f in sorted(zin.filelist, key=zinfo_key):
                 # Skip directories and specific files found in META-INF/ that
