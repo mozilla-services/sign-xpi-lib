@@ -26,19 +26,19 @@ test_requirements = [
 ]
 
 setup(
-    name='sign_xpi_lib',
+    name='sign-xpi-lib',
     version='0.1.0',
     description="A library to handle the manipulations of signing XPIs at Mozilla.",
     long_description=readme + '\n\n' + changelog,
     author="Ethan Glasser-Camp",
     author_email='eglassercamp@mozilla.com',
-    url='https://github.com/glasserc/sign_xpi_lib',
+    url='https://github.com/mozilla-services/sign-xpi-lib',
     packages=find_packages(include=['sign_xpi_lib']),
     include_package_data=True,
     install_requires=requirements,
     license="MIT license",
     zip_safe=False,
-    keywords='sign_xpi_lib',
+    keywords='sign_xpi',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
