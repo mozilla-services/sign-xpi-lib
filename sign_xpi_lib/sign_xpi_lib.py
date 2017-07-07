@@ -63,6 +63,13 @@ def file_key(filename):
     return (prio, os.path.split(filename.lower()))
 
 
+def zinfo_key(zinfo):
+    """
+    Same as file_key, but for a ZipInfo entry.
+    """
+    return file_key(zinfo.filename)
+
+
 def _digest(data):
     md5 = hashlib.md5()
     md5.update(data)
@@ -193,9 +200,6 @@ class XPIFile(object):
             digests = _digest(data)
             item = Section(fname, digests=digests)
             self._digests.append(item)
-
-        def zinfo_key(zinfo):
-            return file_key(zinfo.filename)
 
         with ZipFile(self.inpath, 'r') as zin:
             for f in sorted(zin.filelist, key=zinfo_key):
