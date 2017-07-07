@@ -226,7 +226,6 @@ class XPIFile(object):
         if os.path.exists(outpath):
             raise FileExistsError("File already exists: {}".format(outpath))
 
-        sigpath = sigpath
         # Normalize to a simple filename with no extension or prefixed
         # directory
         sigpath = os.path.splitext(os.path.basename(sigpath))[0]
