@@ -4,6 +4,12 @@ include CHANGELOG.rst
 include LICENSE
 include README.rst
 
+include *.py
+exclude requirements_dev.txt
+exclude .editorconfig
+exclude tox.ini
+exclude Makefile
+
 recursive-include tests *
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
