@@ -6,15 +6,15 @@ sign-xpi-lib
 .. image:: https://img.shields.io/pypi/v/sign_xpi_lib.svg
         :target: https://pypi.python.org/pypi/sign_xpi_lib
 
-.. image:: https://img.shields.io/travis/glasserc/sign_xpi_lib.svg
-        :target: https://travis-ci.org/glasserc/sign_xpi_lib
+.. image:: https://img.shields.io/travis/mozilla-services/sign-xpi-lib.svg
+        :target: https://travis-ci.org/mozilla-services/sign-xpi-lib
 
 .. image:: https://readthedocs.org/projects/sign-xpi-lib/badge/?version=latest
         :target: https://sign-xpi-lib.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
-.. image:: https://pyup.io/repos/github/glasserc/sign_xpi_lib/shield.svg
-     :target: https://pyup.io/repos/github/glasserc/sign_xpi_lib/
+.. image:: https://pyup.io/repos/github/mozilla-services/sign-xpi-lib/shield.svg
+     :target: https://pyup.io/repos/github/mozilla-services/sign-xpi-lib/
      :alt: Updates
 
 
