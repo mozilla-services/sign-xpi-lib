@@ -77,7 +77,11 @@ def _digest(data):
     sha1.update(data)
     sha256 = hashlib.sha256()
     sha256.update(data)
-    return {'md5': md5.digest(), 'sha1': sha1.digest(), 'sha256': sha256.digest()}
+    return {
+        'md5': md5.digest(),
+        'sha1': sha1.digest(),
+        'sha256': sha256.digest(),
+    }
 
 
 class Section(object):
