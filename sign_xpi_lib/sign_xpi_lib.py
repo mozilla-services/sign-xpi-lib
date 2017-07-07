@@ -106,8 +106,22 @@ class Section(object):
         return entry
 
 
+def manifest_header(type_name, version='1.0'):
+    """Returns a header, suitable for use in a manifest.
+
+    >>> manifest_header("signature")
+    "Signature-Version: 1.0"
+
+    :param type_name: The kind of manifest which needs a header: "manifest", "signature".
+    :param version: The manifest version to encode in the header (default: '1.0')
+    """
+    return "{}-Version: {}".format(
+        type_name.title(),
+        version,
+    )
+
+
 class Manifest(object):
-    version = '1.0'
     # Older versions of Firefox crash if a JAR manifest style file doesn't
     # end in a blank line("\n\n").  For more details see:
     # https://bugzilla.mozilla.org/show_bug.cgi?id=1158467
@@ -119,17 +133,11 @@ class Manifest(object):
             setattr(self, k, v)
 
     @property
-    def header(self):
-        return "{}-Version: {}".format(
-            type(self).__name__.title(),
-            self.version).encode('utf-8')
-
-    @property
     def body(self):
         return b"\n".join([str(i).encode('utf-8') for i in self.sections])
 
     def __str__(self):
-        segments = [self.header.decode('utf-8'),
+        segments = [manifest_header('Manifest'),
                     "",
                     self.body.decode('utf-8'),
                     ""]
@@ -146,19 +154,19 @@ class Signature(Manifest):
             "{}-Digest-Manifest: {}".format(
                 item[0].upper(),
                 b64encode(item[1]).decode('utf-8')
-            ).encode('utf-8')
+            )
             for item in sorted(self.digest_manifests.items())
         ]
 
     @property
     def header(self):
-        segments = [super(Signature, self).header]
+        segments = [manifest_header('Signature')]
         segments.extend(self.digest_manifest)
-        segments.append(b"")
-        return b"\n".join(segments)
+        segments.append('')
+        return "\n".join(segments).encode('utf-8')
 
     def __str__(self):
-        return self.header.decode('utf-8') + "\n"
+        return self.header + "\n"
 
 
 class XPIFile(object):
