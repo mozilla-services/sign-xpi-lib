@@ -7,11 +7,16 @@ import functools
 import hashlib
 import os.path
 import re
+import sys
 from zipfile import ZipFile, ZIP_DEFLATED
 from base64 import b64encode
 
 
 directory_re = re.compile(r"[\\/]$")
+ZIPFILE_WRITE_EXCLUSIVE_MODE = 'x'
+ZIPFILE_WRITE_MODE = 'w'
+if sys.version_info >= (3, 5):
+    ZIPFILE_WRITE_MODE = ZIPFILE_WRITE_EXCLUSIVE_MODE
 
 
 def ignore_certain_metainf_files(filename):
@@ -217,6 +222,10 @@ class XPIFile(object):
         if not outpath:
             raise IOError("No output file specified")
 
+        # FIXME: Take this out once we stop supporting 3.4 and less
+        if os.path.exists(outpath):
+            raise FileExistsError("File already exists: {}".format(outpath))
+
         sigpath = sigpath
         # Normalize to a simple filename with no extension or prefixed
         # directory
@@ -224,7 +233,7 @@ class XPIFile(object):
         sigpath = os.path.join('META-INF', sigpath)
 
         with ZipFile(self.inpath, 'r') as zin:
-            with ZipFile(outpath, 'x', ZIP_DEFLATED) as zout:
+            with ZipFile(outpath, ZIPFILE_WRITE_MODE, ZIP_DEFLATED) as zout:
                 # The PKCS7 file("foo.rsa") *MUST* be the first file in the
                 # archive to take advantage of Firefox's optimized downloading
                 # of XPIs
