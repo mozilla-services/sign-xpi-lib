@@ -51,6 +51,12 @@ MD5-Digest: X/eti4SGeMla30jsgvXsYg==
 SHA1-Digest: eYJ+zdu1ufrA0ZNH82aj17iQ23U=
 SHA256-Digest: qf/cDvSBp+jx5x7/QUVNZSex+WuSOr9bQ3acXEKXc6o=
 
+Name: 悶絶ñé💩ı
+Digest-Algorithms: MD5 SHA1 SHA256
+MD5-Digest: 1B2M2Y8AsgTpgAmY7PhCfg==
+SHA1-Digest: 2jmj7l5rSw0yVb/vlWAYkK/YBwk=
+SHA256-Digest: 47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=
+
 Name: icons/hypothetical-48.png
 Digest-Algorithms: MD5 SHA1 SHA256
 MD5-Digest: NyKobXm4DOyAkCDBomN2NA==
@@ -65,9 +71,9 @@ def test_xpi_signer_signature_seems_sane():
     x = XPIFile(get_test_file('hypothetical-addon-unsigned.xpi'))
 
     assert x.signature == """Signature-Version: 1.0
-MD5-Digest-Manifest: 8vL/r3cOVrIsSgyAIgN9SA==
-SHA1-Digest-Manifest: LxW3zSX3tlnm1Nfq/RJjzP9nYes=
-SHA256-Digest-Manifest: H2Qpz9EAX0SbhY4s+V9xcK0ul3Ia5tM/VGgxTT+IDWQ=
+MD5-Digest-Manifest: 5zaRZmvOY+2TpuvBZMYgwg==
+SHA1-Digest-Manifest: kcG3SrNMA4bTbBDA6iOx5t93wqw=
+SHA256-Digest-Manifest: j3T7lorOa6BjdPFdCWD5bEvDDrZQmR48zzBuuJx9CkQ=
 
 """
 
