@@ -106,14 +106,15 @@ class Section(object):
         return entry
 
 
-class Manifest(list):
+class Manifest(object):
     version = '1.0'
     # Older versions of Firefox crash if a JAR manifest style file doesn't
     # end in a blank line("\n\n").  For more details see:
     # https://bugzilla.mozilla.org/show_bug.cgi?id=1158467
 
-    def __init__(self, *args, **kwargs):
-        super(Manifest, self).__init__(*args)
+    def __init__(self, sections, **kwargs):
+        super(Manifest, self).__init__()
+        self.sections = sections
         for k, v in kwargs.items():
             setattr(self, k, v)
 
@@ -125,7 +126,7 @@ class Manifest(list):
 
     @property
     def body(self):
-        return b"\n".join([str(i).encode('utf-8') for i in self])
+        return b"\n".join([str(i).encode('utf-8') for i in self.sections])
 
     def __str__(self):
         segments = [self.header.decode('utf-8'),
