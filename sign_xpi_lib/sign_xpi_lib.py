@@ -50,7 +50,7 @@ def file_key(zinfo):
     elif name in ["MPL", "GPL", "LGPL", "COPYING", "LICENSE", "license.txt"]:
         prio = 5
     parts = [prio] + list(os.path.split(name.lower()))
-    return "%d-%s-%s" % tuple(parts)
+    return "{}-{}-{}".format(*parts)
 
 
 def _digest(data):
@@ -78,14 +78,14 @@ class Section(object):
         order = list(self.digests.keys())
         order.sort()
         for algo in order:
-            algos += ' %s' % algo.upper()
+            algos += ' {}'.format(algo.upper())
         entry = ''
         # The spec for zip files only supports extended ASCII and UTF-8
         # See http://www.pkware.com/documents/casestudies/APPNOTE.TXT
         # and search for "language encoding" for details
         #
         # See https://bugzilla.mozilla.org/show_bug.cgi?id=1013347
-        name = 'Name: %s' % self.name
+        name = 'Name: {}'.format(self.name)
 
         # See https://bugzilla.mozilla.org/show_bug.cgi?id=841569#c35
         while name:
@@ -94,9 +94,9 @@ class Section(object):
             if name:
                 entry += '\n '
         entry += '\n'
-        entry += 'Digest-Algorithms:%s\n' % algos
+        entry += 'Digest-Algorithms:{}\n'.format(algos)
         for algo in order:
-            entry += '%s-Digest: %s\n' % (
+            entry += '{}-Digest: {}\n'.format(
                 algo.upper(), b64encode(self.digests[algo]).decode('utf-8'))
         return entry
 
@@ -114,9 +114,9 @@ class Manifest(list):
 
     @property
     def header(self):
-        return b"%s-Version: %s" % (
-            type(self).__name__.title().encode('utf-8'),
-            self.version.encode('utf-8'))
+        return "{}-Version: {}".format(
+            type(self).__name__.title(),
+            self.version).encode('utf-8')
 
     @property
     def body(self):
@@ -136,9 +136,13 @@ class Signature(Manifest):
 
     @property
     def digest_manifest(self):
-        return [b"%s-Digest-Manifest: %s" %
-                (item[0].upper().encode('utf-8'), b64encode(item[1]))
-                for item in sorted(self.digest_manifests.items())]
+        return [
+            "{}-Digest-Manifest: {}".format(
+                item[0].upper(),
+                b64encode(item[1]).decode('utf-8')
+            ).encode('utf-8')
+            for item in sorted(self.digest_manifests.items())
+        ]
 
     @property
     def header(self):
@@ -224,7 +228,7 @@ class XPIFile(object):
                 # The PKCS7 file("foo.rsa") *MUST* be the first file in the
                 # archive to take advantage of Firefox's optimized downloading
                 # of XPIs
-                zout.writestr("%s.rsa" % sigpath, signature)
+                zout.writestr("{}.rsa".format(sigpath), signature)
                 for f in zin.infolist():
                     # Make sure we exclude any of our signature and manifest
                     # files
@@ -232,6 +236,6 @@ class XPIFile(object):
                         continue
                     zout.writestr(f, zin.read(f.filename))
                 zout.writestr("META-INF/manifest.mf", str(self.manifest))
-                zout.writestr("%s.sf" % sigpath, signed_manifest)
+                zout.writestr("{}.sf".format(sigpath), signed_manifest)
                 if self.ids is not None:
                     zout.writestr('META-INF/ids.json', self.ids)
