@@ -112,3 +112,35 @@ To run a subset of tests::
 
 $ py.test tests.test_sign_xpi_lib
 
+Releasing
+---------
+
+Install `zest.releaser` with the `recommended` dependencies. They contain
+`wheel` and `twine`, which are required to release a new version.
+
+.. code-block:: bash
+
+    $ pip install "zest.releaser[recommended]"
+
+Step 1
+++++++
+
+.. code-block:: bash
+
+     $ git checkout -b prepare-X.Y.Z
+     $ prerelease
+
+Step 2
+++++++
+
+Once the pull-request is validated, merge it and do a release.
+Use the ``release`` command to invoke the ``setup.py``, which builds and uploads to PyPI.
+
+.. code-block:: bash
+
+    $ git checkout master
+    $ git merge --no-ff prepare-X.Y.Z
+    $ release
+    $ postrelease
+
+That's all, folks!
