@@ -144,9 +144,11 @@ class Manifest(object):
         return "\n".join(segments)
 
 
-class Signature(Manifest):
-    digest_manifests = {}
+class Signature(object):
     filename = 'zigbert'
+
+    def __init__(self, digest_manifests):
+        self.digest_manifests = digest_manifests
 
     @property
     def digest_manifest(self):
@@ -214,7 +216,7 @@ class XPIFile(object):
         # sections of the the META-INF/manifest.mf file.  So we generate those
         # signatures here
         digest_manifest = _digest(str(self.manifest).encode('utf-8'))
-        return Signature([], digest_manifests=digest_manifest)
+        return Signature(digest_manifests=digest_manifest)
 
     @property
     def signature(self):
