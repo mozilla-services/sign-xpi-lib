@@ -71,11 +71,10 @@ def _digest(data):
 
 
 class Section(object):
-    __slots__ = ('name', 'algos', 'digests')
+    __slots__ = ('name', 'digests')
 
-    def __init__(self, name, algos=('md5', 'sha1'), digests={}):
+    def __init__(self, name, digests={}):
         self.name = name
-        self.algos = algos
         self.digests = digests
 
     def __str__(self):
@@ -179,8 +178,7 @@ class XPIFile(object):
 
         def mksection(data, fname):
             digests = _digest(data)
-            item = Section(fname, algos=tuple(digests.keys()),
-                           digests=digests)
+            item = Section(fname, digests=digests)
             self._digests.append(item)
         def zinfo_key(zinfo):
             return file_key(zinfo.filename)
@@ -197,8 +195,7 @@ class XPIFile(object):
 
     def _sign(self, item):
         digests = _digest(str(item).encode('utf-8'))
-        return Section(item.name, algos=tuple(digests.keys()),
-                       digests=digests)
+        return Section(item.name, digests=digests)
 
     @property
     @functools.lru_cache(maxsize=None)
